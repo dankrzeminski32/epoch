@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Create an Account{% endblock %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+         {% load static %}
+
+{% block content %}
+{% if form.errors %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        {% for field in form %}
+            {% if field.errors %}
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span>{{ field.label }}: {{ field.errors|striptags }}</span><br>
+            {% endif %}
+        {% endfor %}
+        {% for error in form.non_field_errors  %}
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span>Error: {{ error|striptags }}</span>
+        {% endfor %}
+    </div>
+{% endif %}
+<!-- /DIV -->
+<div class="wrapper">
+        <div class="logo">
+            <img src="{% static 'img/favicon.png' %}" alt="">
+        </div>
+        <div class="text-center mt-4 name">
+            Epoch
+        </div>
+        <form method="post" class="p-3 mt-3">
+            {% csrf_token %}
+          {% for field in form %}
+          <div class="form-outline mb-4">
+            <div class="form-field d-flex align-items-center">
+                <span class="far fa-user"></span>
+                {{field}}
+            </div>
+              </div>
+          {%endfor%}
+            <button type="submit" class="btn mt-3">Sign Up</button>
+        </form>
+        <div class="text-center fs-6">
+            Already have an account? <a href="{% url 'login' %}">Sign in</a>
+        </div>
+    </div>
+  {% endblock %}
+
+
