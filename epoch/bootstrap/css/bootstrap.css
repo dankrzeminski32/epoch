@@ -12211,3 +12211,13 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
     margin-left: -15rem;
   }
 }
+
+.purple-button {
+  background-color: #452C82;
+  border: #452C82 solid;
+
+}
+
+.epoch-logo {
+  font-weight: 800;
+}

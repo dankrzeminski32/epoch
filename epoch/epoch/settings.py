@@ -31,8 +31,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL = "accounts/login"
 LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/accounts/login"
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'register.apps.RegisterConfig',
     'crispy_forms',
     'crispy_bootstrap5',
+    'sources.apps.SourcesConfig'
 ]
 
 MIDDLEWARE = [

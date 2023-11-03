@@ -3,12 +3,23 @@
 
 {% block title %}Home{% endblock %}
 
+{% load static %}
 {% block inner-content %}
-{% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
-{% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a>
-{% endif %}
+<div class="container my-5">
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
+    <img src="{% static 'img/favicon.png' %}" class="bi mt-4 mb-3" width=100 height=100 alt="">
+    <h1 class="text-body-emphasis">{{ user.username }}, Welcome to Epoch</h1>
+    <p class="col-lg-8 mx-auto fs-5 text-muted">
+    Your own personal news management system. Add some sources or go see what your current sources have published. 
+    </p>
+    <div class="d-inline-flex gap-2 mb-5">
+      <button class="d-inline-flex align-items-center btn btn-primary btn-lg px-4 rounded-pill" type="button">
+        Add Sources 
+      </button>
+      <button class="btn btn-outline-secondary btn-lg px-4 rounded-pill" type="button">
+        News
+      </button>
+    </div>
+  </div>
+</div>
 {% endblock %}
