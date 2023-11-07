@@ -22,9 +22,11 @@
         </div>
         <div>
           <strong>Link:</strong> {{source.link}} 
+          <br>
+          <strong>Published:</strong> {{source.published}} 
         </div>
       </div>
-      <a href=""><button class="btn btn-success">Add Source</button></a href>
+      <a href="{% url 'add-source' source_id=source.pk %}"><button class="btn btn-success">Add Source</button></a href>
     </div>
   {% endfor %}
     </div>

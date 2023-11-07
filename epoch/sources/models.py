@@ -7,7 +7,7 @@ class Source(models.Model):
     link = models.CharField(max_length=255, blank=True, default="")
     description = models.CharField(max_length=255, blank=True, default="")
     published = models.DateTimeField(null=True, blank=True)
-    subsribers = models.ManyToManyField(get_user_model())
+    subscribers = models.ManyToManyField(get_user_model())
 
     def __str__(self):
         return f'Source({self.title}, {self.link}, {self.description}, {self.published})'

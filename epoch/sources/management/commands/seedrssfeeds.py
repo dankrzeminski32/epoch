@@ -18,6 +18,9 @@ class Command(BaseCommand):
                     self.style.SUCCESS(
                         'Successfully seeded source')
                 )
+                headlines = parser.get_headlines_for_source(url)
+                for headline in headlines:
+                    headline.save()
             else:
                 self.stdout.write(
                     self.style.ERROR(

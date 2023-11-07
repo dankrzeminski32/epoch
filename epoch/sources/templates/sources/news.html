@@ -1,0 +1,22 @@
+{% extends "authenticated-base.html" %}
+
+{% block title %}News{% endblock %}
+
+{% load static %}
+{% block inner-content %}
+<div class="container my-5">
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
+    <h2>News</h2>
+  {% for headlines in headlines %}
+  <div class="card" style="width: 18rem;">
+  <img src="..." class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{ headline.title }}</h5>
+    <p class="card-text">{{ headline.description }}</p>
+    <a href="#" class="btn btn-primary">Read More</a>
+  </div>
+</div>
+  {% endfor %}
+  </div>
+</div>
+{% endblock %}
