@@ -13,5 +13,6 @@ urlpatterns = [
          auth_views.LoginView.as_view(authentication_form=CustomAuthForm), name='login'),
     path('accounts/logout', auth_views.LogoutView.as_view(), name="logout"),
     path("", general_views.home, name="home"),
-    path('accounts/register/', v.register, name="register")
+    path('accounts/register/', v.register, name="register"),
+    path("sources/", include("sources.urls"))
 ]

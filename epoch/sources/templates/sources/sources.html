@@ -1,0 +1,33 @@
+{% extends "authenticated-base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% load static %}
+{% block inner-content %}
+<div class="container my-5">
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
+    <h2>Community Sources</h2>
+  <div class="accordion" id="accordionExample">
+  {% for source in sources %}
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading{{forloop.counter}}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#error{{forloop.counter}}" aria-expanded="false" aria-controls="collapseOne">
+        {{source.title}}
+      </button>
+    </h2>
+    <div id="error{{forloop.counter}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body d-flex justify-content-evenly align-items-center">
+        <div class="w-50">
+          <strong>Description:</strong> {{source.description}} 
+        </div>
+        <div>
+          <strong>Link:</strong> {{source.link}} 
+        </div>
+      </div>
+      <a href=""><button class="btn btn-success">Add Source</button></a href>
+    </div>
+  {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
