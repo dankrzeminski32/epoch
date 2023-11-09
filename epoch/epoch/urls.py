@@ -5,6 +5,7 @@ from register import views as v
 from register.forms import CustomAuthForm
 from django.contrib.auth import views as auth_views
 from . import views as general_views
+import sources
 
 
 urlpatterns = [
@@ -14,5 +15,6 @@ urlpatterns = [
     path('accounts/logout', auth_views.LogoutView.as_view(), name="logout"),
     path("", general_views.home, name="home"),
     path('accounts/register/', v.register, name="register"),
-    path("sources/", include("sources.urls"))
+    path("sources/", include("sources.urls")),
+    path("news/", sources.views.news, name="news")
 ]

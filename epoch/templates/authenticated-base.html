@@ -8,7 +8,7 @@
             <div class="border-end bg-white" id="sidebar-wrapper">
                 <div class="sidebar-heading border-bottom bg-light epoch-logo d-flex justify-content-evenly align-items-center"><a href={% url 'home' %}><img height=50 width=70 src="{% static 'img/favicon.png' %}"></a></div>
                 <div class="list-group list-group-flush">
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">News</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'news' %}">News</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'sources' %}">Sources</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Settings</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{% url 'logout' %}">Logout</a>
