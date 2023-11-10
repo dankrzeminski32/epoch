@@ -1,11 +1,15 @@
 from django.shortcuts import render
 from .models import Source, Headline
 from django.shortcuts import redirect
+from django.contrib import messages  # import messages
 
 
 def sources(request):
+    current_user = request.user
     sources: list[Source] = Source.objects.all()
-    return render(request, "sources/sources.html", {"sources": sources})
+    my_sources: list[Source] = Source.objects.all().filter(
+        subscribers__in=[current_user.pk])
+    return render(request, "sources/sources.html", {"sources": sources, "my_sources": my_sources})
 
 
 def news(request):
@@ -27,4 +31,13 @@ def add_source(request, source_id):
     current_user = request.user
     source_added: Source = Source.objects.get(pk=source_id)
     source_added.subscribers.add(current_user)
+    messages.success(request, "Successfully added a new source.")
+    return redirect(sources)
+
+
+def delete_source(request, source_id):
+    current_user = request.user
+    source_added: Source = Source.objects.get(pk=source_id)
+    source_added.subscribers.remove(current_user)
+    messages.info(request, "Successfully removed source.")
     return redirect(sources)

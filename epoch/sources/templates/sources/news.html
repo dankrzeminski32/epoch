@@ -7,15 +7,21 @@
 <div class="container my-5">
   <div class="p-5 text-center bg-body-tertiary rounded-3">
     <h2>News</h2>
-    <div class="d-flex justify-content-evenly align-items-center flex-wrap w-100">
+  <div class="row row-cols-3 g-3">
   {% for headline in headlines %}
+  <div class="col">
     <div class="card">
+      {% if headline.source.img_link %}
+      <img src="{{ headline.source.img_link}}" class="card-img-top" alt="...">
+      {% else %}
       <img src="{% static 'img/default-image.jpg' %}" class="card-img-top" alt="...">
+      {% endif %}
     <div class="card-body">
       <h5 class="card-title">{{ headline.title }}</h5>
       <p class="card-text">{{ headline.description|truncatechars:50 }}</p>
       <a href="#" class="btn btn-primary">Read More</a>
     </div>
+  </div>
   </div>
   {% endfor %}
     </div>

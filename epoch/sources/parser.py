@@ -3,6 +3,25 @@ from datetime import datetime
 from .models import Source, Headline
 from time import mktime
 from datetime import datetime
+from io import StringIO
+from html.parser import HTMLParser
+
+
+class HTMLTagStripper(HTMLParser):
+    """Strips html tags from text"""
+
+    def __init__(self):
+        super().__init__()
+        self.reset()
+        self.strict = False
+        self.convert_charrefs = True
+        self.text = StringIO()
+
+    def handle_data(self, d):
+        self.text.write(d)
+
+    def get_data(self):
+        return self.text.getvalue()
 
 
 class RSSParser:
@@ -18,14 +37,21 @@ class RSSParser:
                 "The RSS url gave an invalid response.")
         return data
 
+    def _strip_html_tags(self, html):
+        tag_stripper = HTMLTagStripper()
+        tag_stripper.feed(html)
+        return tag_stripper.get_data()
+
     def get_source(self, feed_url) -> Source:
         """returns details of an RSS source if the link is valid, otherwise returns None"""
         try:
             raw_response_data = self._parse(feed_url)
             new_source = Source(link=feed_url)
+            if hasattr(raw_response_data.feed, "image"):
+                new_source.img_link = raw_response_data.feed.image["href"]
             new_source.title = raw_response_data.feed.get("title", "No Title")
-            new_source.description = raw_response_data.feed.get(
-                "description", "No Description")
+            new_source.description = self._strip_html_tags(raw_response_data.feed.get(
+                "description", "No Description"))
             if "updated_parsed" in raw_response_data.feed:
                 new_source.published = datetime.fromtimestamp(
                     mktime(raw_response_data.feed.updated_parsed))
@@ -34,6 +60,7 @@ class RSSParser:
             return None
 
     def get_headlines_for_source(self, feed_url) -> list[Headline]:
+        """returns headlines for an RSS source"""
         try:
             src = Source.objects.all().filter(link=feed_url)[0]
             raw_response_data = self._parse(feed_url)
@@ -43,7 +70,7 @@ class RSSParser:
                     mktime(entry.updated_parsed))
                 new_headline = Headline(
                     title=entry.title,
-                    description=entry.description,
+                    description=self._strip_html_tags(entry.description),
                     published=pub_date,
                     source_id=src.pk
                 )

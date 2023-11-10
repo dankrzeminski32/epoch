@@ -6,7 +6,37 @@
 {% block inner-content %}
 <div class="container my-5">
   <div class="p-5 text-center bg-body-tertiary rounded-3">
-    <h2>Community Sources</h2>
+    <h2>My Sources</h2>
+  <div class="accordion" id="accordionMySources">
+  {% for source in my_sources %}
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="mysourceheading{{forloop.counter}}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#mysource{{forloop.counter}}" aria-expanded="false" aria-controls="collapseOne">
+        {{source.title}}
+      </button>
+    </h2>
+    <div id="mysource{{forloop.counter}}" class="accordion-collapse collapse" data-bs-parent="#accordionMySources">
+      <div class="accordion-body d-flex justify-content-evenly align-items-center">
+        <div class="w-50">
+          <strong>Description:</strong> {{source.description}} 
+        </div>
+        <div>
+          <strong>Link:</strong> {{source.link}} 
+          <br>
+          <strong>Published:</strong> {{source.published}} 
+        </div>
+      </div>
+      <a href="{% url 'delete-source' source_id=source.pk %}"><button class="btn btn-danger">Remove Source</button></a href>
+    </div>
+  {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+
+
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
+  <h2>Community Sources</h2>
   <div class="accordion" id="accordionExample">
   {% for source in sources %}
   <div class="accordion-item">
@@ -30,6 +60,5 @@
     </div>
   {% endfor %}
     </div>
-  </div>
-</div>
+    </div>
 {% endblock %}

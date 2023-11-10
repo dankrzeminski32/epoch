@@ -7,6 +7,7 @@ class Source(models.Model):
     link = models.CharField(max_length=255, blank=True, default="")
     description = models.CharField(max_length=255, blank=True, default="")
     published = models.DateTimeField(null=True, blank=True)
+    img_link = models.CharField(max_length=255, blank=True, default="")
     subscribers = models.ManyToManyField(get_user_model())
 
     def __str__(self):
