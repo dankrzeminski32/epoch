@@ -25,11 +25,12 @@
           <br>
           <strong>Published:</strong> {{source.published}} 
         </div>
-      </div>
+    </div>
       <a href="{% url 'delete-source' source_id=source.pk %}"><button class="btn btn-danger">Remove Source</button></a href>
     </div>
+  </div>
   {% endfor %}
-    </div>
+  </div>
   </div>
 
 

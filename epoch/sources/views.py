@@ -27,6 +27,12 @@ def news(request):
     return render(request, "sources/news.html", {"headlines": headlines})
 
 
+def news_detail(request, headline_id):
+    requested_headline = Headline.objects.get(pk=headline_id)
+    print(requested_headline)
+    return render(request, "sources/news-detail.html", {"headline": requested_headline})
+
+
 def add_source(request, source_id):
     current_user = request.user
     source_added: Source = Source.objects.get(pk=source_id)

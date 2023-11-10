@@ -16,5 +16,7 @@ urlpatterns = [
     path("", general_views.home, name="home"),
     path('accounts/register/', v.register, name="register"),
     path("sources/", include("sources.urls")),
-    path("news/", sources.views.news, name="news")
+    path("news/", sources.views.news, name="news"),
+    path("news/detail/<int:headline_id>",
+         sources.views.news_detail, name="news-detail")
 ]

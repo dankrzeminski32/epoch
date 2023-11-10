@@ -1,0 +1,13 @@
+{% extends "authenticated-base.html" %}
+{% block title %}Headline Detail{% endblock %}
+
+{% load static %}
+{% block inner-content %}
+<div class="container my-5">
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
+    {{ headline.title }}
+    {{ headline.link }}
+    {{ headline.description }}
+  </div>
+  </div>
+{% endblock %}
