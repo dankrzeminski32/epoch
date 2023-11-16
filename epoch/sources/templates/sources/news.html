@@ -11,10 +11,12 @@
   {% for headline in headlines %}
   <div class="col">
     <div class="card">
-      {% if headline.source.img_link %}
-      <img src="{{ headline.source.img_link}}" class="card-img-top" alt="...">
-      {% else %}
-      <img src="{% static 'img/default-image.jpg' %}" class="card-img-top" alt="...">
+      {% if headline.img %}
+        <img src="{{ headline.img }}" class="card-img-top" alt="...">
+      {% elif headline.source.img_link %}
+        <img src="{{ headline.source.img_link}}" class="card-img-top" alt="...">
+        {% else %}
+          <img src="{% static 'img/default-image.jpg' %}" class="card-img-top" alt="...">
       {% endif %}
     <div class="card-body">
       <h5 class="card-title">{{ headline.title }}</h5>

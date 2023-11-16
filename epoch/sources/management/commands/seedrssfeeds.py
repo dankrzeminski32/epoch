@@ -12,7 +12,6 @@ class Command(BaseCommand):
         for url in f:
             source = parser.get_source(url)
             if source:
-                print(source)
                 source.save()
                 self.stdout.write(
                     self.style.SUCCESS(

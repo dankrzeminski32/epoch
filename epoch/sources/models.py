@@ -22,5 +22,5 @@ class Headline(models.Model):
     link = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     published = models.DateTimeField()
-    img = models.CharField(max_length=255)
+    img = models.CharField(max_length=255, blank=True, null=True, default="")
     source = models.ForeignKey(Source, on_delete=models.CASCADE)

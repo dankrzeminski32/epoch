@@ -16,3 +16,19 @@ class EmailBackend(ModelBackend):
             if user.check_password(password):
                 return user
         return None
+
+
+class UserConfig:
+    ...
+
+
+class EmailSettings:
+    ...
+
+
+class TextSettings:
+    ...
+
+
+class ExportSettings:
+    ...
