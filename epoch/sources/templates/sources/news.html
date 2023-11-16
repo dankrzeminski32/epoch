@@ -6,6 +6,33 @@
 {% block inner-content %}
 <div class="container my-5">
   <div class="p-5 text-center bg-body-tertiary rounded-3">
+    <h2>This Week</h2>
+  <div class="row row-cols-3 g-3">
+  {% for headline in headlines %}
+  {% if headline.is_from_current_week %}
+  <div class="col">
+    <div class="card">
+      {% if headline.img %}
+        <img src="{{ headline.img }}" class="card-img-top" alt="...">
+      {% elif headline.source.img_link %}
+        <img src="{{ headline.source.img_link}}" class="card-img-top" alt="...">
+        {% else %}
+          <img src="{% static 'img/default-image.jpg' %}" class="card-img-top" alt="...">
+      {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{ headline.title }}</h5>
+      <p class="card-text">{{ headline.description|truncatechars:50 }}</p>
+      <a href="{% url 'news-detail' headline_id=headline.pk %}" class="btn btn-primary">Read More</a>
+    </div>
+  </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+    </div>
+  </div>
+</div>
+<div class="container my-5">
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
     <h2>News</h2>
   <div class="row row-cols-3 g-3">
   {% for headline in headlines %}

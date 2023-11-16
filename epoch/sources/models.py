@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from datetime import datetime, timedelta
+import pytz
 
 
 class Source(models.Model):
@@ -8,6 +10,7 @@ class Source(models.Model):
     description = models.CharField(max_length=255, blank=True, default="")
     published = models.DateTimeField(null=True, blank=True)
     img_link = models.CharField(max_length=255, blank=True, default="")
+    is_community = models.BooleanField(default=False)
     subscribers = models.ManyToManyField(get_user_model())
 
     def __str__(self):
@@ -24,3 +27,10 @@ class Headline(models.Model):
     published = models.DateTimeField()
     img = models.CharField(max_length=255, blank=True, null=True, default="")
     source = models.ForeignKey(Source, on_delete=models.CASCADE)
+
+    @property
+    def is_from_current_week(self):
+        now = datetime.now(tz=pytz.UTC)
+        monday = now - timedelta(days=now.weekday())
+        monday_start_of_day = monday.replace(hour=0, minute=0, second=0)
+        return self.published > monday_start_of_day

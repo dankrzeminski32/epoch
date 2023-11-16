@@ -10,12 +10,17 @@ class Command(BaseCommand):
         parser = RSSParser()
         f = open("./community_rss_feeds.txt", "r")
         for url in f:
+            self.stdout.write(
+                self.style.NOTICE(
+                    'Attempting to retrieve feed for %s' % url)
+            )
             source = parser.get_source(url)
             if source:
+                source.is_community = True
                 source.save()
                 self.stdout.write(
                     self.style.SUCCESS(
-                        'Successfully seeded source')
+                        'Successfully seeded source - %s' % source.link)
                 )
                 headlines = parser.get_headlines_for_source(url)
                 for headline in headlines:
