@@ -5,9 +5,43 @@
 {% block inner-content %}
 <div class="container my-5">
   <div class="p-5 text-center bg-body-tertiary rounded-3">
-    {{ headline.title }}
-    {{ headline.link }}
-    {{ headline.description }}
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Portfolio Item Heading -->
+    <h1 class="my-4">{{ headline.title }}
+    </h1>
+  
+    <!-- Portfolio Item Row -->
+    <div class="row">
+  
+      <div class="col-md-8">
+      {% if headline.img %}
+        <img src="{{ headline.img }}" height="750" width="500" class="img-fluid" alt="...">
+      {% elif headline.source.img_link %}
+        <img src="{{ headline.source.img_link}}" height="750" width="500" class="img-fluid" alt="...">
+        {% else %}
+          <img src="{% static 'img/default-image.jpg' %}" height="750" width="500" class="img_fluid" alt="...">
+      {% endif %}
+      </div>
+  
+      <div class="col-md-4">
+        <h3 class="my-3">Description</h3>
+        <p>{{ headline.description }}</p>
+        <h3 class="my-3">Details</h3>
+          <div>
+          <div><strong>Date: </strong>{{ headline.published }}</div>
+          <a href="{{ headline.link }}">Go to Source</a>
+        </div>
+      </div>
+  
+    </div>
+    <!-- /.row -->
+  
+  
+  </div>
+  <!-- /.container -->
+  
   </div>
   </div>
 {% endblock %}
