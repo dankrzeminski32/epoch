@@ -3,6 +3,7 @@ from .models import Source, Headline
 from django.shortcuts import redirect
 from django.contrib import messages  # import messages
 from datetime import datetime, timedelta
+from .filters import HeadlineFilter
 
 
 def sources(request):
@@ -16,16 +17,12 @@ def sources(request):
 def news(request):
     current_user = request.user
     users_subscribed_sources: list[Source] = Source.objects.all().filter(
-        subscribers__in=[current_user.pk])
-    headlines: list[Headline] = []
-    for source in users_subscribed_sources:
-        qry = list(Headline.objects.all().filter(source=source.pk))
-        headlines.append(qry)
+        subscribers__in=[current_user.pk]).values_list("id", flat=True)
+    qry = Headline.objects.all().filter(source_id__in=users_subscribed_sources)
+    f = HeadlineFilter(request.GET, queryset=qry, request=request)
+    print(f.qs)
 
-    headlines = ([item for items in headlines for item in items])
-
-    print(headlines)
-    return render(request, "sources/news.html", {"headlines": headlines})
+    return render(request, "sources/news.html", {"filter": f})
 
 
 def news_detail(request, headline_id):

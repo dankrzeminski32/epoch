@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'register.apps.RegisterConfig',
     'crispy_forms',
     'crispy_bootstrap5',
-    'sources.apps.SourcesConfig'
+    'sources.apps.SourcesConfig',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
