@@ -20,7 +20,7 @@ def news(request):
         subscribers__in=[current_user.pk]).values_list("id", flat=True)
     qry = Headline.objects.all().filter(source_id__in=users_subscribed_sources)
     f = HeadlineFilter(request.GET, queryset=qry, request=request)
-    print(f.qs)
+    print(f.qs.query)
 
     return render(request, "sources/news.html", {"filter": f})
 

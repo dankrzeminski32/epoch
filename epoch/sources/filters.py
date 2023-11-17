@@ -16,9 +16,9 @@ def get_users_sources(request):
 
 
 class HeadlineFilter(django_filters.FilterSet):
-    published = DateFromToRangeFilter(label="Date Range ",
+    published = DateFromToRangeFilter(label="Date  ",
                                       widget=RangeWidget(
-                                          attrs={'class': 'form-control w-50',
+                                          attrs={'class': 'form-control w-50 mx-1',
                                                  'placeholder': 'dd/mm/yyyy', 'type':  'date'})
                                       )
     source_id = ChoiceFilter(
@@ -26,7 +26,7 @@ class HeadlineFilter(django_filters.FilterSet):
         widget=forms.Select(attrs={'class': 'form-control w-75'})
     )
     title = CharFilter(label="Title ", lookup_expr="contains", widget=forms.TextInput(
-        attrs={'class': 'form-control w-50'}))
+        attrs={'class': 'form-control w-75', 'placeholder': 'Big Tech, S&P500, etc.'}))
 
     def __init__(self, *args, **kwargs):
         super(HeadlineFilter, self).__init__(*args, **kwargs)

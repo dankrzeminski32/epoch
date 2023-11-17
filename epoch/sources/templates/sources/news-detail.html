@@ -31,7 +31,11 @@
         <h3 class="my-3">Details</h3>
           <div>
           <div><strong>Date: </strong>{{ headline.published }}</div>
-          <a href="{{ headline.link }}">Go to Source</a>
+          {% if headline.link %}
+            <a href="{{ headline.link }}">Go to Source</a>
+          {% else %}
+            <a href="{{ headline.source.link }}">Go to Source</a>
+            {% endif %}
         </div>
       </div>
   

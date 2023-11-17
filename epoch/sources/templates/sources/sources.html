@@ -19,7 +19,7 @@
         {{source.title}}
       </button>
     </h2>
-    <div id="mysource{{forloop.counter}}" class="p-4 accordion-collapse collapse" data-bs-parent="#accordionMySources">
+    <div id="mysource{{forloop.counter}}" class="accordion-collapse collapse" data-bs-parent="#accordionMySources">
       <div class="accordion-body d-flex justify-content-evenly align-items-center">
         <div class="w-50">
           <strong>Description:</strong> {{source.description}} 
@@ -64,6 +64,8 @@
           <strong>Link:</strong> {{source.link}} 
           <br>
           <strong>Published:</strong> {{source.published}} 
+          <br>
+          <strong>Subscribers:</strong> {{source.number_of_subscribers}} 
         </div>
       </div>
       <a href="{% url 'add-source' source_id=source.pk %}"><button class="btn btn-success">Add Source</button></a href>

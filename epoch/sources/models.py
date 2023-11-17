@@ -19,6 +19,11 @@ class Source(models.Model):
     def __repr__(self):
         return f'Source({self.title}, {self.link}, {self.description}, {self.published})'
 
+    @property
+    def number_of_subscribers(self):
+        subs_count = self.subscribers.all().count()
+        return subs_count
+
 
 class Headline(models.Model):
     title = models.CharField(max_length=255)
