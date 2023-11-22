@@ -24,6 +24,10 @@ class Source(models.Model):
         subs_count = self.subscribers.all().count()
         return subs_count
 
+    @property
+    def number_of_headlines(self):
+        return Headline.objects.all().filter(source=self.pk).count()
+
 
 class Headline(models.Model):
     title = models.CharField(max_length=255)

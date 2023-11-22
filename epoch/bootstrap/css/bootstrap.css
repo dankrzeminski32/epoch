@@ -12221,3 +12221,12 @@ body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
 .epoch-logo {
   font-weight: 800;
 }
+
+.no-style-button {
+  	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	outline: inherit;
+}

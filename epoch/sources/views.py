@@ -5,6 +5,8 @@ from django.contrib import messages  # import messages
 from datetime import datetime, timedelta
 from .filters import HeadlineFilter
 from django.contrib.auth.decorators import login_required
+from .forms import CustomSourceForm
+from .parser import RSSParser
 
 
 @login_required
@@ -13,7 +15,29 @@ def sources(request):
     sources: list[Source] = Source.objects.all()
     my_sources: list[Source] = Source.objects.all().filter(
         subscribers__in=[current_user.pk])
-    return render(request, "sources/sources.html", {"sources": sources, "my_sources": my_sources})
+    if request.method == "POST":
+        form = CustomSourceForm(request.POST)
+        if form.is_valid():
+            source_url = form.cleaned_data["custom_source"]
+            rss_parser = RSSParser()
+            new_source: Source = rss_parser.get_source(source_url)
+            new_source.save()
+            new_source.subscribers.add(request.user)
+            messages.success(request, "Successfully added a new source.")
+            return redirect("sources")
+        else:
+            return render(request, "sources/sources.html", {"form": form, "sources": sources, "my_sources": my_sources})
+    else:
+        form = CustomSourceForm()
+        return render(request, "sources/sources.html", {"form": form, "sources": sources, "my_sources": my_sources})
+
+
+@login_required
+def source_detail(request, source_id):
+    requested_source = Source.objects.get(pk=source_id)
+    sample_headlines = Headline.objects.all().filter(
+        source=requested_source.pk)[:4]
+    return render(request, "sources/source-detail.html", {"source": requested_source, "sample_headlines": sample_headlines})
 
 
 @login_required
@@ -26,13 +50,13 @@ def news(request):
     return render(request, "sources/news.html", {"filter": f})
 
 
-@ login_required
+@login_required
 def news_detail(request, headline_id):
     requested_headline = Headline.objects.get(pk=headline_id)
     return render(request, "sources/news-detail.html", {"headline": requested_headline})
 
 
-@ login_required
+@login_required
 def add_source(request, source_id):
     current_user = request.user
     source_added: Source = Source.objects.get(pk=source_id)
@@ -41,7 +65,7 @@ def add_source(request, source_id):
     return redirect(sources)
 
 
-@ login_required
+@login_required
 def delete_source(request, source_id):
     current_user = request.user
     source_added: Source = Source.objects.get(pk=source_id)
