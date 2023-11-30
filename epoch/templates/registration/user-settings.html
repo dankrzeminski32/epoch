@@ -1,0 +1,49 @@
+<!-- templates/home.html-->
+{% extends "authenticated-base.html" %}
+
+{% block title %}User Settings{% endblock %}
+
+{% load static %}
+{% block inner-content %}
+     {% load crispy_forms_tags %}
+{% for form in all_forms %}
+  {% if form.errors %}
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          {% for field in form %}
+              {% if field.errors %}
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <span>{{ field.label }}: {{ field.errors|striptags }}</span><br>
+              {% endif %}
+          {% endfor %}
+          {% for error in form.non_field_errors  %}
+              <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+              <span>Error: {{ error|striptags }}</span>
+          {% endfor %}
+      </div>
+  {% endif %}
+  {% endfor %}
+<div class="container my-5">
+  <div class="p-5 text-center bg-body-tertiary rounded-3 d-flex justify-content-center align-items-center">
+         <form action="" method="post" class="w-50 text-center p-3 bg-light bg-gradient ">
+        {% csrf_token %}
+        <h2><strong><u>User Settings</u></strong><h2>
+              <div class="p-3">
+      {{ user_config_form|crispy }}
+    </div>
+              <div class="p-3">
+      {{ email_settings_form|crispy }}
+    </div>
+              <div class="p-3">
+      {{ text_settings_form|crispy }}
+    </div>
+              <div class="p-3">
+      {{ export_settings_form|crispy }}
+    </div>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+             </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
