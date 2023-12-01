@@ -22,7 +22,7 @@ class Command(BaseCommand):
                     self.style.SUCCESS(
                         'Successfully seeded source - %s' % source.link)
                 )
-                headlines = parser.get_headlines_for_source(url)
+                headlines = parser.get_headlines_for_source(source)
                 for headline in headlines:
                     headline.save()
             else:

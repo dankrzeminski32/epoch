@@ -7,6 +7,7 @@ from .filters import HeadlineFilter
 from django.contrib.auth.decorators import login_required
 from .forms import CustomSourceForm
 from .parser import RSSParser
+from .tasks import fetch_custom_rss_for_user
 
 
 @login_required
@@ -19,11 +20,9 @@ def sources(request):
         form = CustomSourceForm(request.POST)
         if form.is_valid():
             source_url = form.cleaned_data["custom_source"]
-            rss_parser = RSSParser()
-            new_source: Source = rss_parser.get_source(source_url)
-            new_source.save()
-            new_source.subscribers.add(request.user)
-            messages.success(request, "Successfully added a new source.")
+            fetch_custom_rss_for_user.delay(source_url, current_user.pk)
+            messages.success(
+                request, "Attempting to process RSS Feed. Please wait 5-10 minutes.")
             return redirect("sources")
         else:
             return render(request, "sources/sources.html", {"form": form, "sources": sources, "my_sources": my_sources})

@@ -32,20 +32,23 @@ class RSSParser:
         except InvalidRSSURL:
             return None
 
-    def get_headlines_for_source(self, feed_url) -> list[Headline]:
+    def get_headlines_for_source(self, source: Source) -> list[Headline]:
         """returns headlines for an RSS source"""
         try:
-            src = Source.objects.all().filter(link=feed_url)[0]
-            raw_response_data = self._parse(feed_url)
+            raw_response_data = self._parse(source.link)
             headlines = []
             for entry in raw_response_data.entries:
-                pub_date = datetime.fromtimestamp(
-                    mktime(entry.updated_parsed), tz=pytz.UTC)
+                if entry.get("updated_parsed"):
+                    pub_date = datetime.fromtimestamp(
+                        mktime(entry.updated_parsed), tz=pytz.UTC)
+                description = "No Description Available"
+                if entry.get("description"):
+                    description = self._strip_html_tags(entry.description)
                 new_headline = Headline(
                     title=entry.title,
-                    description=self._strip_html_tags(entry.description),
+                    description=description,
                     published=pub_date,
-                    source_id=src.pk,
+                    source_id=source.pk,
                     link=entry.get("link", ""),
                     img=self._get_entry_image(entry),
                 )
@@ -75,6 +78,11 @@ class RSSParser:
             for item in entry.content:
                 if item["type"] == "text/html":
                     return self._get_img_src(item["value"])
+
+        for enclosure in entry.enclosures:
+            if enclosure.type == "image/jpg":
+                return enclosure.url
+
         return None
 
     def _strip_html_tags(self, html) -> str:
