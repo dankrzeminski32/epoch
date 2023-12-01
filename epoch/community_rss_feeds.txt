@@ -1,7 +1,5 @@
 https://www.nytimes.com/svc/collections/v1/publish/https://www.nytimes.com/section/books/review/rss.xml
-https://feeds.feedburner.com/nybooks
 https://www.theguardian.com/books/booksblog/rss
-http://feeds.foxnews.com/foxnews/national
 http://rss.cnn.com/rss/edition_us.rss
 http://rss.art19.com/the-daily
 https://rss.art19.com/smartless
