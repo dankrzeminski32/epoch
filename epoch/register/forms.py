@@ -57,6 +57,14 @@ class TextSettingsForm(forms.ModelForm):
         super(TextSettingsForm, self).__init__(*args, **kwargs)
         self.fields['is_text_notifications_active'].label = 'Text Notifications'
 
+    def clean(self):
+        form_data = self.cleaned_data
+        if form_data["is_text_notifications_active"]:
+            if form_data["phone_number"] == "":
+                self._errors["phone_number"] = [
+                    "Must have a phone number if notifications are enabled."]
+        return form_data
+
 
 class ExportSettingsForm(forms.ModelForm):
     class Meta:

@@ -3,6 +3,7 @@
 
 {% load static %}
 {% block inner-content %}
+{% load tz %}
 <div class="container my-5">
   <div class="p-5 text-center bg-body-tertiary rounded-3">
 <!-- Page Content -->
@@ -30,7 +31,7 @@
         <p>{{ headline.description }}</p>
         <h3 class="my-3">Details</h3>
           <div>
-          <div><strong>Date: </strong>{{ headline.published }}</div>
+          <div><strong>Date: </strong>{{ headline.published|timezone:users_timezone }}</div>
           {% if headline.link %}
             <a href="{{ headline.link }}">Go to Source</a>
           {% else %}

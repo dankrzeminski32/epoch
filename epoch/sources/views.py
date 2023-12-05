@@ -13,9 +13,9 @@ from .tasks import fetch_custom_rss_for_user
 @login_required
 def sources(request):
     current_user = request.user
-    sources: list[Source] = Source.objects.all()
     my_sources: list[Source] = Source.objects.all().filter(
         subscribers__in=[current_user.pk])
+    users_timezone = current_user.userconfig.timezone
     if request.method == "POST":
         form = CustomSourceForm(request.POST)
         if form.is_valid():
@@ -25,34 +25,44 @@ def sources(request):
                 request, "Attempting to process RSS Feed. Please wait 5-10 minutes.")
             return redirect("sources")
         else:
-            return render(request, "sources/sources.html", {"form": form, "sources": sources, "my_sources": my_sources})
+            return render(request, "sources/sources.html", {"form": form, "sources": sources, "my_sources": my_sources, "users_timezone": users_timezone})
     else:
         form = CustomSourceForm()
-        return render(request, "sources/sources.html", {"form": form, "sources": sources, "my_sources": my_sources})
+        return render(request, "sources/sources.html", {"form": form, "my_sources": my_sources, "users_timezone": users_timezone})
+
+
+@login_required
+def community_sources(request):
+    com_sources: list[Source] = Source.objects.filter(is_community=True)
+    users_timezone = request.user.userconfig.timezone
+    return render(request, "sources/community_sources.html", {"com_sources": com_sources, "users_timezone": users_timezone})
 
 
 @login_required
 def source_detail(request, source_id):
+    users_timezone = request.user.userconfig.timezone
     requested_source = Source.objects.get(pk=source_id)
     sample_headlines = Headline.objects.all().filter(
         source=requested_source.pk)[:4]
-    return render(request, "sources/source-detail.html", {"source": requested_source, "sample_headlines": sample_headlines})
+    return render(request, "sources/source-detail.html", {"source": requested_source, "sample_headlines": sample_headlines, "users_timezone": users_timezone})
 
 
 @login_required
 def news(request):
     current_user = request.user
+    users_timezone = current_user.userconfig.timezone
     users_subscribed_sources: list[Source] = Source.objects.all().filter(
         subscribers__in=[current_user.pk]).values_list("id", flat=True)
     qry = Headline.objects.all().filter(source_id__in=users_subscribed_sources)
     f = HeadlineFilter(request.GET, queryset=qry, request=request)
-    return render(request, "sources/news.html", {"filter": f})
+    return render(request, "sources/news.html", {"filter": f, "users_timezone": users_timezone})
 
 
 @login_required
 def news_detail(request, headline_id):
+    users_timezone = request.user.userconfig.timezone
     requested_headline = Headline.objects.get(pk=headline_id)
-    return render(request, "sources/news-detail.html", {"headline": requested_headline})
+    return render(request, "sources/news-detail.html", {"headline": requested_headline, "users_timezone": users_timezone})
 
 
 @login_required

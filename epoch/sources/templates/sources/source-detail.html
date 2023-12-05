@@ -3,6 +3,7 @@
 
 {% load static %}
 {% block inner-content %}
+{% load tz %}
 <div class="container my-5">
   <div class="p-5 text-center bg-body-tertiary rounded-3">
 <!-- Page Content -->
@@ -28,12 +29,16 @@
         <p>{{ source.description }}</p>
         <h3 class="my-3">Details</h3>
           <div>
-            <div><strong>Date: </strong>{{ source.published }}</div>
+            {% if source.published %}
+              <div class="my-3"><strong>Date: </strong>{{ source.published|timezone:users_timezone }}</div>
+            {% else %}
+            <div class="my-3"><strong>Date:</strong> Unavailable</div>
+              {% endif %}
             <div>
             {% if user in source.subscribers.all %} 
-              <a href="{% url 'delete-source' source_id=source.pk %}"><button class="btn btn-danger">Remove Source</button></a href>
+              <a href="{% url 'delete-source' source_id=source.pk %}"><button class="btn btn-danger">Unsubscribe</button></a href>
             {% else %}
-              <a href="{% url 'add-source' source_id=source.pk %}"><button class="btn btn-success">Add Source</button></a href>
+              <a href="{% url 'add-source' source_id=source.pk %}"><button class="btn btn-success">Subscribe</button></a href>
             {% endif %}
             </div>
         </div>
@@ -69,7 +74,7 @@
         </ul>
         <div class="card-footer ">
           <div class="d-flex justify-content-evenly align-items-center">
-            <small class="text-muted">Published: {{ headline.published }}</small> <a href="{% url 'news-detail' headline_id=headline.pk %}" class=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
+            <small class="text-muted">Published: {{ headline.published|timezone:users_timezone }}</small> <a href="{% url 'news-detail' headline_id=headline.pk %}" class=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
           <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8zm5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707l-4.096 4.096z"/>
         </svg>
             </a>

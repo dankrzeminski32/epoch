@@ -6,6 +6,7 @@
 {% block inner-content %}
 {% load crispy_forms_tags %}
 {% load crispy_forms_filters %}
+{% load tz %}
 <div class="container my-5">
   <div class="p-5 text-center bg-body-tertiary rounded-3">
     <nav class="navbar navbar-dark bg-light bg-gradient rounded my-3">
@@ -49,7 +50,7 @@
         </ul>
         <div class="card-footer ">
           <div class="d-flex justify-content-evenly align-items-center">
-            <small class="text-muted">Published: {{ headline.published }}</small> <a href="{% url 'news-detail' headline_id=headline.pk %}" class=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
+            <small class="text-muted">Published: {{ headline.published | timezone:users_timezone }}</small> <a href="{% url 'news-detail' headline_id=headline.pk %}" class=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
           <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8zm5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707l-4.096 4.096z"/>
         </svg>
             </a>

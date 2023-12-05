@@ -1,0 +1,35 @@
+{% extends "authenticated-base.html" %}
+
+{% block title %}Sources{% endblock %}
+
+{% load static %}
+{% block inner-content %}
+<div class="container my-5">
+  <div class="p-5 text-center bg-body-tertiary rounded-3">
+    <div class="d-flex align-items-center justify-content-center">
+      <h2>Community Sources  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+  <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+        </svg></h2>
+    </div>
+  <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 g-3">
+  {% for source in com_sources %}
+  <div class="col">
+    <div class="card">
+      {% if source.img_link %}
+        <img src="{{ source.img_link}}" width="250" height="250" class="card-img-top" alt="...">
+        {% else %}
+          <img src="{% static 'img/default-image.jpg' %}" width="250" height="250" class="card-img-top" alt="...">
+      {% endif %}
+    <div class="card-body">
+      <h5 class="card-title fw-bold">{{ source.title }} <a href="{% url 'source-detail' source_id=source.pk %}" class=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-arrow-up-right-circle-fill" viewBox="0 0 16 16">
+          <path d="M0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8zm5.904 2.803a.5.5 0 1 1-.707-.707L9.293 6H6.525a.5.5 0 1 1 0-1H10.5a.5.5 0 0 1 .5.5v3.975a.5.5 0 0 1-1 0V6.707l-4.096 4.096z"/>
+          </svg></a>
+</h5>
+    </div>
+    </div>
+  </div>
+  {% endfor %}
+  </div>
+    </div>
+  </div>
+{% endblock %}
