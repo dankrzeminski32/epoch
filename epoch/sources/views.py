@@ -20,10 +20,24 @@ def sources(request):
         form = CustomSourceForm(request.POST)
         if form.is_valid():
             source_url = form.cleaned_data["custom_source"]
-            fetch_custom_rss_for_user.delay(source_url, current_user.pk)
-            messages.success(
-                request, "Attempting to process RSS Feed. Please wait 5-10 minutes.")
-            return redirect("sources")
+            if Source.objects.filter(
+                    subscribers__in=[current_user.pk], link=source_url).exists():
+                messages.error(
+                    request, "You are already subscribed to that source.")
+                return redirect("sources")
+
+            if Source.objects.filter(link=source_url).exists():
+                existing_source = Source.objects.filter(link=source_url)[0]
+                existing_source.subscribers.add(current_user)
+                messages.success(
+                    request, "Successfully subscribed to %s." % source_url)
+                return redirect("sources")
+            else:
+                # process new source
+                fetch_custom_rss_for_user.delay(source_url, current_user.pk)
+                messages.success(
+                    request, "Attempting to process RSS Feed. Please wait 5-10 minutes.")
+                return redirect("sources")
         else:
             return render(request, "sources/sources.html", {"form": form, "sources": sources, "my_sources": my_sources, "users_timezone": users_timezone})
     else:
@@ -43,7 +57,7 @@ def source_detail(request, source_id):
     users_timezone = request.user.userconfig.timezone
     requested_source = Source.objects.get(pk=source_id)
     sample_headlines = Headline.objects.all().filter(
-        source=requested_source.pk)[:4]
+        source=requested_source.pk)[:3]
     return render(request, "sources/source-detail.html", {"source": requested_source, "sample_headlines": sample_headlines, "users_timezone": users_timezone})
 
 

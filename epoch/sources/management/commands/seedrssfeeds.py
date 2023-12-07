@@ -8,7 +8,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         parser = RSSParser()
-        f = open("./community_rss_feeds.txt", "r")
+        f = open("./community_rss_feeds.txt", "r").read().splitlines()
         for url in f:
             self.stdout.write(
                 self.style.NOTICE(

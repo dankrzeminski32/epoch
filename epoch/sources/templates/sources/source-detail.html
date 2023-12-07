@@ -14,7 +14,7 @@
     </h1>
   
     <!-- Portfolio Item Row -->
-    <div class="row">
+    <div class="row my-5">
   
       <div class="col-md-8">
       {% if source.img_link %}
@@ -50,17 +50,17 @@
       <!-- Related Projects Row -->
     <h3 class="my-4">Sample Headlines</h3>
   
-    <div class="row">
+    <div class="row d-flex justify-content-around align-items-center my-5">
   
     {% for headline in sample_headlines %}
       <div class="col-md-3 col-sm-6 mb-4">
     <div class="card">
       {% if headline.img %}
-        <img src="{{ headline.img }}" height="300" width="300" class="card-img-top" alt="...">
+        <img src="{{ headline.img }}" height="300" width="400" class="card-img-top" alt="...">
       {% elif headline.source.img_link %}
-        <img src="{{ headline.source.img_link}}" height="300" width="300" class="card-img-top" alt="...">
+        <img src="{{ headline.source.img_link}}" height="300" width="400" class="card-img-top" alt="...">
         {% else %}
-          <img src="{% static 'img/default-image.jpg' %}" height="300" width="300" class="card-img-top" alt="...">
+          <img src="{% static 'img/default-image.jpg' %}" height="300" width="400" class="card-img-top" alt="...">
       {% endif %}
     <div class="card-body">
       <h5 class="card-title fw-bold">{{ headline.title }}</h5>
